@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ok-v1775150209774';
+const CACHE_NAME = 'fikrur rosyid-v1775156621197';
 const urlsToCache = [
   './',
   './index.html',

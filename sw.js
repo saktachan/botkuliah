@@ -1,4 +1,4 @@
-const CACHE_NAME = 'bot kuliah-v1774707114918';
+const CACHE_NAME = 'jurnal fikrur rosyid-v1775144787425';
 const urlsToCache = [
   './',
   './index.html',

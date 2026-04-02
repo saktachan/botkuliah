@@ -616,13 +616,53 @@
             <button onclick="showPage('dashboard-view')" class="md:hidden mb-3 sm:mb-4 text-gray-400 hover:text-brand flex items-center gap-1.5 sm:gap-2 transition text-[10px] sm:text-xs font-medium">
                 <i class="fa-solid fa-arrow-left"></i> Kembali
             </button>
-            <div class="stagger-item glass-panel p-5 sm:p-6 md:p-10 text-center" style="animation-delay: 0.1s;">
-                <i class="fa-solid fa-gear text-4xl sm:text-5xl md:text-6xl text-brand mb-3 sm:mb-4 md:mb-6 icon-3d hover:rotate-90 transition-transform duration-500"></i>
-                <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-white mb-2">Pengaturan</h2>
-                <p class="text-gray-400 text-[9px] sm:text-[10px] md:text-sm mb-4 sm:mb-6 md:mb-8 px-2 break-words-custom">Tema aplikasi telah disetel permanen ke mode Dark Premium sesuai desain referensi.</p>
-                <div class="bg-cardbg border border-cardborder rounded-xl p-4 sm:p-5 md:p-6 mb-3 sm:mb-4 md:mb-6">
-                    <p class="text-[10px] sm:text-xs md:text-sm text-brandLight font-bold mb-1.5 sm:mb-2">Informasi Developer</p>
-                    <p class="text-[9px] sm:text-[10px] md:text-xs text-gray-400 break-words-custom">Dikembangkan oleh <strong>Fikrur Rosyid</strong> menggunakan Vanilla JS & Tailwind CSS.</p>
+            
+            <div class="space-y-4 sm:space-y-6">
+                <!-- Kartu Informasi Developer -->
+                <div class="stagger-item glass-panel p-5 sm:p-6 md:p-8 text-center relative overflow-hidden" style="animation-delay: 0.1s;">
+                    <i class="fa-solid fa-gear text-4xl sm:text-5xl md:text-6xl text-brand mb-3 sm:mb-4 md:mb-6 icon-3d hover:rotate-90 transition-transform duration-500"></i>
+                    <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-white mb-2">Pengaturan Sistem</h2>
+                    <p class="text-gray-400 text-[9px] sm:text-[10px] md:text-sm mb-4 sm:mb-6 md:mb-8 px-2 break-words-custom">Tema aplikasi telah disetel permanen ke mode Dark Premium.</p>
+                    <div class="bg-cardbg border border-cardborder rounded-xl p-4 sm:p-5 md:p-6 mb-2">
+                        <p class="text-[10px] sm:text-xs md:text-sm text-brandLight font-bold mb-1.5 sm:mb-2">Informasi Developer</p>
+                        <p class="text-[9px] sm:text-[10px] md:text-xs text-gray-400 break-words-custom">Dikembangkan oleh <strong>Fikrur Rosyid</strong> menggunakan Vanilla JS & Tailwind CSS.</p>
+                    </div>
+                </div>
+
+                <!-- Kartu Integrasi WA Bot -->
+                <div class="admin-only stagger-item glass-panel p-5 sm:p-6 md:p-8 border border-green-500/20" style="animation-delay: 0.2s;">
+                    <div class="flex items-center gap-3 sm:gap-4 border-b border-cardborder pb-4 sm:pb-5 mb-4 sm:mb-5">
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center text-xl sm:text-2xl shrink-0">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-base sm:text-lg md:text-xl font-bold text-white">Integrasi Bot WhatsApp</h2>
+                            <p class="text-[9px] sm:text-[10px] md:text-xs text-gray-400 mt-0.5">Dapatkan notifikasi pengingat jadwal dan tugas.</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3 sm:space-y-4">
+                        <div>
+                            <label class="block text-[9px] sm:text-[10px] md:text-xs text-gray-400 mb-1">Nomor WhatsApp (Awali dengan 62)</label>
+                            <input type="text" id="wa-number" placeholder="Cth: 6281234567890" class="w-full bg-darkbg border border-cardborder rounded-lg px-3 sm:px-4 py-2 text-[10px] sm:text-xs md:text-sm text-white focus:outline-none focus:border-green-500 transition">
+                        </div>
+                        <div>
+                            <label class="block text-[9px] sm:text-[10px] md:text-xs text-gray-400 mb-1">API Token Bot (Opsional)</label>
+                            <input type="password" id="wa-token" placeholder="Masukkan token jika ada" class="w-full bg-darkbg border border-cardborder rounded-lg px-3 sm:px-4 py-2 text-[10px] sm:text-xs md:text-sm text-white focus:outline-none focus:border-green-500 transition">
+                        </div>
+                        <div class="flex items-center justify-between bg-darkbg p-3 rounded-lg border border-cardborder mt-1 sm:mt-2">
+                            <span class="text-[9px] sm:text-[10px] md:text-xs text-gray-300 font-medium">Aktifkan Notifikasi WA</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="wa-status" class="sr-only peer">
+                                <div class="w-9 h-5 bg-cardborder peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-gray-400 after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-green-500 peer-checked:after:bg-white"></div>
+                            </label>
+                        </div>
+                        <div class="pt-2 sm:pt-3">
+                            <button onclick="saveWASettings()" class="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 sm:px-6 rounded-lg transition text-[10px] sm:text-xs shadow-[0_4px_14px_0_rgba(34,197,94,0.39)]">
+                                <i class="fa-solid fa-save mr-1.5"></i> Simpan Pengaturan WA
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1422,8 +1462,21 @@
         }
         window.saveProfil = function() {
             if(!isAdmin) return;
-            profileData = { name: document.getElementById('input-name').value, nim: document.getElementById('input-nim').value, bio: document.getElementById('input-bio').value, avatarUrl: document.getElementById('input-avatar').value };
+            profileData = { name: document.getElementById('input-name').value, nim: document.getElementById('input-nim').value, bio: document.getElementById('input-bio').value, avatarUrl: document.getElementById('input-avatar').value, waNumber: profileData.waNumber, waToken: profileData.waToken, waActive: profileData.waActive };
             toggleEditProfil(); renderUI(); saveAllData();
+        }
+
+        // --- PENGATURAN WA LOGIC ---
+        window.saveWASettings = function() {
+            if(!isAdmin) return customAlert("Aktifkan Mode Admin untuk mengubah pengaturan.", "info");
+            
+            // Simpan ke dalam objek profileData agar tersinkronisasi
+            profileData.waNumber = document.getElementById('wa-number').value;
+            profileData.waToken = document.getElementById('wa-token').value;
+            profileData.waActive = document.getElementById('wa-status').checked;
+            
+            saveAllData();
+            customAlert("Pengaturan Bot WhatsApp berhasil disimpan!", "success");
         }
 
         // --- GOOGLE APPS SCRIPT SYNC & LOADER LOGIC ---
@@ -1465,6 +1518,13 @@
                 if(result.tasks) tasksData = result.tasks; 
                 if(result.todos) todoData = result.todos;
                 
+                // Set nilai UI untuk integrasi WA saat data dimuat
+                if(document.getElementById('wa-number')) {
+                    document.getElementById('wa-number').value = profileData.waNumber || "";
+                    document.getElementById('wa-token').value = profileData.waToken || "";
+                    document.getElementById('wa-status').checked = profileData.waActive || false;
+                }
+
                 renderUI();
                 hideLoader();
             } catch (error) { 

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'jurnal fikrur rosyid-v1775144787425';
+const CACHE_NAME = 'ok-v1775150209774';
 const urlsToCache = [
   './',
   './index.html',

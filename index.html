@@ -38,12 +38,31 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jodit/3.24.2/jodit.min.js"></script>
 
     <style>
+        /* ====================================================
+           CUSTOM BACKGROUND & BASE
+           ==================================================== */
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #0A0A0E;
             color: #ffffff;
             overflow-x: hidden;
+            /* Grid Background Pattern */
+            background-image: 
+                linear-gradient(rgba(116, 57, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(116, 57, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-attachment: fixed;
         }
+
+        /* Animasi untuk cahaya ambient melayang yang AMAN (Tanpa Blur Filter CSS) */
+        @keyframes blob {
+            0% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0px, 0px) scale(1); }
+        }
+        .animate-blob { animation: blob 15s infinite alternate ease-in-out; }
+        .animation-delay-2000 { animation-delay: 2s; }
 
         /* Hero Blob Animation */
         .hero-blob {
@@ -61,7 +80,7 @@
         .icon-3d { filter: drop-shadow(0 10px 15px rgba(116, 57, 255, 0.6)); }
 
         .glass-panel {
-            background: #14141B;
+            background: #14141B; /* Dikembalikan ke solid agar tidak merusak rendering browser dengan glow bg */
             border: 1px solid #242430;
             border-radius: 1.25rem;
             transition: all 0.3s ease;
@@ -103,6 +122,11 @@
         .rich-text ol { list-style-type: decimal; padding-left: 1.2em; font-size: 0.95em; }
         .rich-text a { color: #9b73ff; text-decoration: underline; word-break: break-all; }
         .break-words-custom { word-break: break-word; overflow-wrap: break-word; }
+
+        /* Custom Scrollbar for activity panels */
+        .custom-scrollbar::-webkit-scrollbar { width: 3px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #7439FF; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
 
         /* ====================================================
            FLOATING PILL MOBILE NAVIGATION (TAMPILAN HP)
@@ -165,7 +189,7 @@
         .radial-center-btn {
             width: 72px;
             height: 72px;
-            background: linear-gradient(135deg, #7439FF, #4a15cc); /* Warna ungu mencolok */
+            background: linear-gradient(135deg, #7439FF, #4a15cc);
             border: 2px solid rgba(255,255,255,0.15);
             color: white;
             border-radius: 50%;
@@ -174,7 +198,7 @@
             align-items: center;
             justify-content: center;
             cursor: grab;
-            box-shadow: 0 8px 30px rgba(116, 57, 255, 0.6); /* Glow ungu */
+            box-shadow: 0 8px 30px rgba(116, 57, 255, 0.6);
             position: relative;
             z-index: 10;
             transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55), box-shadow 0.3s;
@@ -188,7 +212,7 @@
         }
         .radial-center-btn.open {
             transform: scale(0.9);
-            background: #14141B; /* Menjadi gelap saat terbuka */
+            background: #14141B; 
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.8);
         }
         .radial-ring {
@@ -198,8 +222,8 @@
             width: 280px;
             height: 280px;
             margin: -140px 0 0 -140px;
-            background-color: #14141B; /* Diubah menjadi gelap senada dengan card */
-            border: 1px solid #242430; /* Tambahan border agar lebih tegas */
+            background-color: #14141B; 
+            border: 1px solid #242430; 
             border-radius: 50%;
             box-shadow: 0 15px 50px rgba(0, 0, 0, 0.7);
             transform: scale(0);
@@ -225,15 +249,15 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #a1a1aa; /* Ikon abu-abu terang */
+            color: #a1a1aa; 
             font-size: 1.35rem;
             cursor: pointer;
             transition: all 0.3s ease;
         }
         .radial-item:hover, .radial-item.active {
-            background-color: #7439FF; /* Diubah menjadi warna Ungu Tema */
-            color: #ffffff; /* Ikon menjadi putih */
-            box-shadow: 0 5px 15px rgba(116, 57, 255, 0.5); /* Glow Ungu */
+            background-color: #7439FF; 
+            color: #ffffff; 
+            box-shadow: 0 5px 15px rgba(116, 57, 255, 0.5); 
             transform: scale(1.15);
         }
     </style>
@@ -245,6 +269,11 @@
   
 </head>
 <body class="min-h-screen relative flex flex-col bg-darkbg" id="app-body">
+
+    <!-- ================= AMBIENT BACKGROUND & MOUSE GLOW (SAFE VERSION) ================= -->
+    <div class="fixed top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-[radial-gradient(circle,_rgba(116,57,255,0.1)_0%,_transparent_70%)] rounded-full animate-blob z-0 pointer-events-none"></div>
+    <div class="fixed bottom-[-10%] right-[-10%] w-[60vw] h-[60vw] bg-[radial-gradient(circle,_rgba(37,99,235,0.1)_0%,_transparent_70%)] rounded-full animate-blob animation-delay-2000 z-0 pointer-events-none"></div>
+    <div id="cursor-glow" class="hidden md:block pointer-events-none fixed top-0 left-0 w-96 h-96 bg-[radial-gradient(circle,_rgba(116,57,255,0.15)_0%,_transparent_60%)] rounded-full z-0 transition-opacity duration-300" style="transform: translate(-50%, -50%);"></div>
 
     <div id="global-loader" class="fixed inset-0 z-[9999] bg-darkbg flex flex-col items-center justify-center transition-all duration-700 ease-in-out">
         <div class="relative flex items-center justify-center w-32 h-32 sm:w-40 sm:h-40 mb-8 sm:mb-10">
@@ -280,10 +309,13 @@
             
             <div class="flex flex-col-reverse md:flex-row items-center justify-between py-4 md:py-12 gap-8 md:gap-10">
                 <div class="flex-1 text-center md:text-left w-full stagger-item" style="animation-delay: 0.1s;">
-                    <h3 class="text-lg md:text-2xl font-semibold text-gray-300 mb-2">Hello Buds</h3>
-                    <h1 class="text-4xl md:text-6xl font-bold text-white mb-4 leading-tight break-words-custom">
-                        I am <span class="text-brand" id="dash-name">MEMUAT...</span>
-                    </h1>
+                    
+                    <!-- AREA ANIMASI MESIN KETIK BERULANG (TYPEWRITER LOOP) -->
+                    <div class="min-h-[90px] md:min-h-[120px] flex flex-col justify-end mb-4 relative w-full items-center md:items-start">
+                        <h3 class="text-lg md:text-2xl font-semibold text-gray-300 mb-1 md:mb-2 min-h-[28px] md:min-h-[32px] flex items-center" id="type-line-1">Hello Buds</h3>
+                        <h1 class="text-4xl md:text-6xl font-bold leading-tight break-words-custom flex items-center flex-wrap min-h-[40px] md:min-h-[60px]" id="type-line-2">I am <span class="text-brand ml-3">MEMUAT...</span></h1>
+                    </div>
+                    
                     <p class="text-sm md:text-base text-gray-400 mb-6 uppercase tracking-widest font-medium break-words-custom" id="dash-nim">UI / UX Design Enthusiast</p>
                     
                     <hr class="w-16 border-brand border-t-2 mb-6 mx-auto md:mx-0">
@@ -401,30 +433,57 @@
                     </div>
                 </div>
 
+                <!-- ================= SECTION AKTIVITAS TERKINI (UPDATED 3 COLUMNS) ================= -->
                 <div class="stagger-item glass-panel p-5 sm:p-6 md:p-8 border border-[#242430]" style="animation-delay: 0.6s;">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-base md:text-lg font-bold text-white">Aktivitas Terkini (Jadwal & Tugas)</h3>
+                    <div class="mb-6 flex items-center justify-between">
+                        <h3 class="text-base md:text-lg font-bold text-white"><i class="fa-solid fa-bolt-lightning text-brand mr-2"></i>Pusat Aktivitas Jurnal</h3>
                     </div>
-                    <div class="overflow-x-auto custom-scrollbar">
-                        <table class="w-full text-left border-collapse min-w-[600px]">
-                            <thead>
-                                <tr class="text-[10px] sm:text-xs text-gray-500 uppercase border-b border-cardborder">
-                                    <th class="pb-3 font-medium px-3">Aktivitas</th>
-                                    <th class="pb-3 font-medium px-3">Konteks Informasi</th>
-                                    <th class="pb-3 font-medium px-3">Status</th>
-                                    <th class="pb-3 font-medium px-3 text-right">Waktu / Deadline</th>
-                                </tr>
-                            </thead>
-                            <tbody id="info-detailed-list" class="text-sm">
-                                <!-- Data Injected by JS -->
-                            </tbody>
-                        </table>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <!-- KOLOM 1: HARI INI -->
+                        <div class="flex flex-col min-w-0">
+                            <div class="flex items-center justify-between mb-4 border-b border-cardborder pb-2">
+                                <span class="text-xs font-bold text-emerald-400 uppercase tracking-widest flex items-center gap-2">
+                                    <i class="fa-solid fa-calendar-check"></i> Jadwal Hari Ini
+                                </span>
+                                <span class="text-[10px] text-gray-500 font-medium" id="today-name-label">...</span>
+                            </div>
+                            <div class="max-h-[350px] overflow-y-auto custom-scrollbar pr-2 space-y-3" id="list-today">
+                                <!-- Data Injected -->
+                            </div>
+                        </div>
+
+                        <!-- KOLOM 2: BESOK -->
+                        <div class="flex flex-col min-w-0">
+                            <div class="flex items-center justify-between mb-4 border-b border-cardborder pb-2">
+                                <span class="text-xs font-bold text-blue-400 uppercase tracking-widest flex items-center gap-2">
+                                    <i class="fa-solid fa-calendar-day"></i> Jadwal Besok
+                                </span>
+                                <span class="text-[10px] text-gray-500 font-medium" id="tomorrow-name-label">...</span>
+                            </div>
+                            <div class="max-h-[350px] overflow-y-auto custom-scrollbar pr-2 space-y-3" id="list-tomorrow">
+                                <!-- Data Injected -->
+                            </div>
+                        </div>
+
+                        <!-- KOLOM 3: DAFTAR TUGAS -->
+                        <div class="flex flex-col min-w-0">
+                            <div class="flex items-center justify-between mb-4 border-b border-cardborder pb-2">
+                                <span class="text-xs font-bold text-purple-400 uppercase tracking-widest flex items-center gap-2">
+                                    <i class="fa-solid fa-list-check"></i> Tugas Pending
+                                </span>
+                                <span class="text-[10px] text-gray-500 font-medium" id="task-count-label">0 Item</span>
+                            </div>
+                            <div class="max-h-[350px] overflow-y-auto custom-scrollbar pr-2 space-y-3" id="list-tasks-dash">
+                                <!-- Data Injected -->
+                            </div>
+                        </div>
                     </div>
                 </div>
 
             </div>
             
-            <div class="mt-8 md:mt-10 py-6 border-t border-cardborder flex justify-center text-xs md:text-sm text-gray-500 text-center">
+            <div class="mt-8 md:mt-10 py-6 border-t border-cardborder/50 flex justify-center text-xs md:text-sm text-gray-500 text-center">
                 <p>&copy; 2026 Hak Cipta Fikrur Rosyid. Dilindungi Undang-Undang.</p>
             </div>
         </div>
@@ -1169,12 +1228,91 @@
 
         function saveAllData() { sendToServer('saveAll', { profile: profileData, subjects: subjectsData, notes: notesData, tasks: tasksData, todos: todoData }); }
 
+        // --- ANIMASI MESIN KETIK BERULANG (JS) ---
+        let typingTimeout;
+        window.runFullTypewriter = function(name) {
+            const line1 = document.getElementById('type-line-1');
+            const line2 = document.getElementById('type-line-2');
+            if(!line1 || !line2) return;
+            
+            clearTimeout(typingTimeout);
+            
+            const text1 = "Hello Buds";
+            const prefix = "I am ";
+            const fullText2 = prefix + name;
+            
+            let isDeleting = false;
+            let currentLine = 1;
+            let charIndex = 0;
+            // Kursor berkedip buatan JS yang sangat responsif
+            const cursorHTML = '<span class="inline-block w-[3px] md:w-[4px] h-[0.9em] bg-brand animate-[pulse_0.8s_ease-in-out_infinite] ml-1.5 align-middle rounded-full shadow-[0_0_10px_rgba(116,57,255,0.8)]"></span>';
+            
+            function type() {
+                let speed = isDeleting ? 30 : 120; // Kecepatan menghapus vs mengetik
+                if(!isDeleting) speed += Math.random() * 50 - 25; // Randomizer kecil agar terkesan manusia mengetik beneran
+                
+                if (isDeleting) {
+                    if (currentLine === 2) {
+                        charIndex--;
+                        if(charIndex <= prefix.length) {
+                            line2.innerHTML = prefix.substring(0, charIndex) + cursorHTML;
+                        } else {
+                            line2.innerHTML = `${prefix}<span class="text-brand ml-2 md:ml-3">${name.substring(0, charIndex - prefix.length)}</span>` + cursorHTML;
+                        }
+                        line1.innerHTML = text1; 
+                        
+                        if (charIndex === 0) {
+                            currentLine = 1;
+                            charIndex = text1.length;
+                            line2.innerHTML = ""; 
+                        }
+                    } else {
+                        charIndex--;
+                        line1.innerHTML = text1.substring(0, charIndex) + cursorHTML;
+                        if (charIndex === 0) {
+                            isDeleting = false;
+                            speed = 600; // Diam sebentar sebelum ngetik ulang
+                        }
+                    }
+                } else {
+                    if (currentLine === 1) {
+                        charIndex++;
+                        line1.innerHTML = text1.substring(0, charIndex) + cursorHTML;
+                        line2.innerHTML = ""; 
+                        if (charIndex === text1.length) {
+                            currentLine = 2;
+                            charIndex = 0;
+                            speed = 400; // Jeda dari line 1 mau ke line 2
+                        }
+                    } else {
+                        charIndex++;
+                        line1.innerHTML = text1; // Line 1 fix, tanpa kursor
+                        if(charIndex <= prefix.length) {
+                            line2.innerHTML = prefix.substring(0, charIndex) + cursorHTML;
+                        } else {
+                            line2.innerHTML = `${prefix}<span class="text-brand ml-2 md:ml-3">${name.substring(0, charIndex - prefix.length)}</span>` + cursorHTML;
+                        }
+                        
+                        if (charIndex === fullText2.length) {
+                            isDeleting = true;
+                            speed = 4000; // Diam lama saat teks sudah lengkap, sebelum dihapus lagi
+                        }
+                    }
+                }
+                
+                typingTimeout = setTimeout(type, speed);
+            }
+            type();
+        };
+
         // --- RENDER UI ---
         window.renderUI = function() {
             const encodedName = encodeURIComponent(profileData.name || "M");
             const finalAvatar = profileData.avatarUrl || `https://ui-avatars.com/api/?name=${encodedName}&background=7439FF&color=fff&size=400&bold=true`;
 
-            const dName = document.getElementById('dash-name'); if(dName) dName.innerText = profileData.name;
+            // Eksekusi fungsi mesin ketik animasi
+            runFullTypewriter(profileData.name || "MEMUAT...");
+            
             const dNim = document.getElementById('dash-nim'); if(dNim) dNim.innerText = profileData.nim;
             const dBio = document.getElementById('dash-bio'); if(dBio) dBio.innerText = profileData.bio;
             const dAva = document.getElementById('dash-avatar'); if(dAva) dAva.src = finalAvatar;
@@ -1192,75 +1330,87 @@
             renderTodos();
         }
 
-        // --- REMINDERS ---
+        // --- DASHBOARD CENTER (UPDATED WITH 3 COLUMNS) ---
         window.renderDashboardReminders = function() {
             const days = ["MINGGU", "SENIN", "SELASA", "RABU", "KAMIS", "JUMAT", "SABTU"];
-            let tomorrowIdx = (new Date().getDay() + 1) % 7;
+            let now = new Date();
+            let todayIdx = now.getDay();
+            let tomorrowIdx = (todayIdx + 1) % 7;
+            
+            let todayName = days[todayIdx];
             let tomorrowName = days[tomorrowIdx];
             
+            // Info Cards Data
+            let todaySubjects = subjectsData.filter(s => s.day.toUpperCase() === todayName);
+            let tomorrowSubjects = subjectsData.filter(s => s.day.toUpperCase() === tomorrowName);
+            let pendingTodos = todoData.filter(t => !t.isDone);
+
+            // Update Labels
             const tDayLabel = document.getElementById('tomorrow-day-label');
             if (tDayLabel) tDayLabel.innerText = tomorrowName;
 
-            let tomorrowSubjects = subjectsData.filter(s => s.day.toUpperCase() === tomorrowName);
             const jCount = document.getElementById('info-jadwal-count');
             if(jCount) jCount.innerText = tomorrowSubjects.length;
 
-            let pendingTodos = todoData.filter(t => !t.isDone);
             const tCount = document.getElementById('info-tugas-count');
             if(tCount) tCount.innerText = pendingTodos.length;
 
+            const tNameLab = document.getElementById('today-name-label');
+            if(tNameLab) tNameLab.innerText = todayName;
+            
+            const tmNameLab = document.getElementById('tomorrow-name-label');
+            if(tmNameLab) tmNameLab.innerText = tomorrowName;
+
+            const taskCountLab = document.getElementById('task-count-label');
+            if(taskCountLab) taskCountLab.innerText = pendingTodos.length + ' Item';
+
+            // ADMIN STATUS UI Update
             const adminIcon = document.getElementById('info-admin-icon-dash');
             const adminBg = document.getElementById('admin-icon-bg');
             const adminGlow = document.getElementById('admin-glow');
             const adminStatus = document.getElementById('info-admin-status-dash');
-
             if(adminIcon) adminIcon.setAttribute('class', isAdmin ? "fa-solid fa-unlock text-xs sm:text-sm text-green-400" : "fa-solid fa-shield-halved text-xs sm:text-sm text-red-400");
             if(adminBg) adminBg.setAttribute('class', isAdmin ? "w-10 h-10 rounded-xl bg-green-500/20 text-green-400 flex items-center justify-center shadow-[0_0_10px_rgba(34,197,94,0.2)] text-lg" : "w-10 h-10 rounded-xl bg-red-500/20 text-red-400 flex items-center justify-center shadow-[0_0_10px_rgba(239,68,68,0.2)] text-lg");
             if(adminGlow) adminGlow.setAttribute('class', isAdmin ? "absolute top-0 right-0 w-24 h-24 bg-green-500/10 rounded-full blur-2xl -mr-10 -mt-10 transition-transform duration-500 group-hover:scale-150" : "absolute top-0 right-0 w-24 h-24 bg-red-500/10 rounded-full blur-2xl -mr-10 -mt-10 transition-transform duration-500 group-hover:scale-150");
             if(adminStatus) adminStatus.innerText = isAdmin ? "Terbuka" : "Terkunci";
 
-            let listHtml = "";
-            let combinedActivities = [];
+            // Helper to build list items
+            const buildItem = (title, meta, time, colorClass) => `
+                <div class="p-3 rounded-xl bg-white/[0.03] border border-white/[0.05] hover:border-brand/40 transition-all group">
+                    <div class="flex items-center gap-3">
+                        <div class="w-2 h-8 rounded-full ${colorClass}"></div>
+                        <div class="min-w-0 flex-1">
+                            <p class="text-xs font-bold text-white truncate group-hover:text-brandLight transition-colors">${title}</p>
+                            <p class="text-[10px] text-gray-500 truncate">${meta}</p>
+                        </div>
+                        <div class="text-right shrink-0">
+                            <p class="text-[10px] font-bold text-gray-400">${time}</p>
+                        </div>
+                    </div>
+                </div>`;
 
-            tomorrowSubjects.forEach(s => {
-                combinedActivities.push({
-                    type: 'jadwal', title: s.name, context: s.room + ' | ' + s.lecturer,
-                    status: 'Besok', time: s.time, icon: 'J', color: 'blue'
-                });
-            });
+            // RENDER TODAY
+            const todayContainer = document.getElementById('list-today');
+            if(todayContainer) {
+                todayContainer.innerHTML = todaySubjects.length > 0 
+                    ? todaySubjects.map(s => buildItem(s.name, s.room, s.time, 'bg-emerald-500')).join('')
+                    : `<p class="text-[10px] text-gray-600 italic py-4 text-center">Tidak ada jadwal hari ini.</p>`;
+            }
 
-            pendingTodos.forEach(t => {
-                combinedActivities.push({
-                    type: 'tugas', title: t.title, context: getSubjectName(t.subjectId),
-                    status: 'Pending', time: t.deadline, icon: 'T', color: 'purple'
-                });
-            });
+            // RENDER TOMORROW
+            const tomorrowContainer = document.getElementById('list-tomorrow');
+            if(tomorrowContainer) {
+                tomorrowContainer.innerHTML = tomorrowSubjects.length > 0 
+                    ? tomorrowSubjects.map(s => buildItem(s.name, s.room, s.time, 'bg-blue-500')).join('')
+                    : `<p class="text-[10px] text-gray-600 italic py-4 text-center">Tidak ada jadwal besok.</p>`;
+            }
 
-            const detList = document.getElementById('info-detailed-list');
-            if(detList) {
-                if (combinedActivities.length === 0) {
-                    detList.innerHTML = `<tr><td colspan="4" class="py-6 text-center text-gray-500 italic text-sm border-b border-cardborder/50">Tidak ada aktivitas sistem terkini.</td></tr>`;
-                } else {
-                    detList.innerHTML = combinedActivities.map((act, index) => {
-                        let badgeClass = act.status === 'Besok' ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20' : 'bg-orange-500/10 text-orange-400 border border-orange-500/20';
-                        let iconClass = act.color === 'blue' ? 'bg-blue-500/20 text-blue-400' : 'bg-purple-500/20 text-purple-400';
-                        return `
-                        <tr class="stagger-item border-b border-cardborder/50 hover:bg-white/[0.02] transition-colors" style="animation-delay: ${0.1 + (index * 0.05)}s;">
-                            <td class="py-4 px-3 flex items-center gap-3">
-                                <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full ${iconClass} flex items-center justify-center font-bold text-xs sm:text-sm shrink-0">${act.icon}</div>
-                                <div class="min-w-0">
-                                    <p class="text-white font-medium text-xs sm:text-sm truncate max-w-[150px] sm:max-w-[250px]">${act.title}</p>
-                                    <p class="text-gray-500 text-[10px] sm:text-xs capitalize truncate">${act.type}</p>
-                                </div>
-                            </td>
-                            <td class="py-4 px-3 text-gray-400 text-[10px] sm:text-xs truncate max-w-[120px] sm:max-w-[200px]">${act.context}</td>
-                            <td class="py-4 px-3">
-                                <span class="${badgeClass} px-2 py-1 rounded-md text-[10px] sm:text-xs whitespace-nowrap">${act.status}</span>
-                            </td>
-                            <td class="py-4 px-3 text-right text-gray-400 text-[10px] sm:text-xs whitespace-nowrap">${act.time}</td>
-                        </tr>`;
-                    }).join('');
-                }
+            // RENDER TASKS
+            const taskContainer = document.getElementById('list-tasks-dash');
+            if(taskContainer) {
+                taskContainer.innerHTML = pendingTodos.length > 0 
+                    ? pendingTodos.map(t => buildItem(t.title, getSubjectName(t.subjectId), t.deadline, 'bg-purple-500')).join('')
+                    : `<p class="text-[10px] text-gray-600 italic py-4 text-center">Bersih! Tidak ada tugas pending.</p>`;
             }
         }
 
@@ -1705,8 +1855,52 @@
             catch (error) { customAlert("Gagal menyimpan ke basis data Cloud.", "error"); } finally { showSync(false); }
         }
 
+        // --- MOUSE GLOW INTERACTION ---
+        const cursorGlow = document.getElementById('cursor-glow');
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        let glowX = mouseX;
+        let glowY = mouseY;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animateGlow() {
+            // Memberikan efek easing agar pergerakan glow terlihat halus dan natural
+            glowX += (mouseX - glowX) * 0.15;
+            glowY += (mouseY - glowY) * 0.15;
+            
+            if(cursorGlow) {
+                // Mengurangi 192px (setengah dari w-96 / 384px) agar cahaya pas di tengah ujung mouse
+                cursorGlow.style.transform = `translate(${glowX - 192}px, ${glowY - 192}px)`;
+            }
+            requestAnimationFrame(animateGlow);
+        }
+        
+        // Animasi mouse hanya dijalankan di perangkat desktop/laptop untuk menghemat baterai & performa di HP
+        if(window.innerWidth > 768) { 
+            requestAnimationFrame(animateGlow);
+        }
+
         loadData();
     </script>
+
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js')
+            .then(registration => {
+              console.log('ServiceWorker registration successful with scope: ', registration.scope);
+            })
+            .catch(err => {
+              console.log('ServiceWorker registration failed: ', err);
+            });
+        });
+      }
+    </script>
+  
 
     <script>
       if ('serviceWorker' in navigator) {

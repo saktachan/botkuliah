@@ -1,4 +1,4 @@
-const CACHE_NAME = 'fikrur rosyid new-v1775224194301';
+const CACHE_NAME = 'jurnal kuliah new-v1777828209217';
 const urlsToCache = [
   './',
   './index.html',

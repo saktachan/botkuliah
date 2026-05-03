@@ -1,10 +1,10 @@
 {
-  "name": "Fikrur Rosyid new",
-  "short_name": "Fikrur Rosyid new",
+  "name": "JURNAL KULIAH NEW",
+  "short_name": "JURNAL KULIAH NEW",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#000000",
+  "theme_color": "#ffffff",
   "icons": [
     {
       "src": "icon-192.png",
